@@ -25,8 +25,13 @@ def make_request(
         "stream": stream
     }
 
-    response = requests.post(base_url, headers=headers, json=data)
-    return response.text
+    
+    try:
+        response = requests.post(base_url, headers=headers, json=data)
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as err:
+        print(f"HTTP Error: {err}")
+        return {}
 
 
 if __name__ == "__main__":
